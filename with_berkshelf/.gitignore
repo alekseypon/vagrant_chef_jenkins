@@ -1,3 +1,4 @@
 # vagrant stuff
 .vagrant/
 .vagrant.d/
+nodes/*

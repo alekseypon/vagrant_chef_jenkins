@@ -1,4 +1,4 @@
-Vagrant with chef provisioner
+Vagrant with chef-zero provisioner
 =============================
 
 Brief description
@@ -15,21 +15,21 @@ Jenkins is used for periodically checking website. Jenkins is accessible by url 
 
 Usage
 -----
-VirtualBox extensions are required for chef provisioning, so vagrant-vbguest plugin should be installed
+VirtualBox extension is required for chef provisioning, so vagrant-vbguest plugin should be installed
 
 ```
 vagrant plugin install vagrant-vbguest
 ```
 
-Using simple example:
+Simple example:
 ```
 cd simple
 vagrant up
 ```
 
-If we want to use berkshelf, we should install plugin vagrant-berkshelf and ChefDK (https://downloads.chef.io/chefdk)
+If we want to use Berkshelf, we should install plugin vagrant-berkshelf and ChefDK (https://downloads.chef.io/chefdk)
 
-Using berkshelf example:
+Berkshelf example:
 ```
 cd with_berkshelf
 vagrant up
