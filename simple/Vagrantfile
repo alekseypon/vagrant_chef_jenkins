@@ -1,0 +1,75 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+#  config.vm.network "public_network"
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+    vb.memory = "1024"
+    vb.cpus = 1
+  end
+  (1..2).each do |i|
+    config.vm.define "web#{i}" do |node|
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = "web#{i}"
+      end
+      node.vm.network "private_network", ip: "192.168.100.#{100+i}"
+      node.vm.provision "chef_zero" do |chef|
+        chef.nodes_path = "nodes"
+        chef.cookbooks_path = ["site-cookbooks"]
+        chef.add_recipe "my-apache"
+        chef.json = {
+          "my-apache" => {
+            "num" => "#{i}"
+          }
+        }
+      end
+    end
+  end
+  config.vm.define "lb" do |node|
+    node.vm.provider "virtualbox" do |vb|
+      vb.name = "lb"
+    end
+    node.vm.network "private_network", ip: "192.168.100.10"
+    node.vm.provision "chef_zero" do |chef|
+      chef.nodes_path = "nodes"
+      chef.cookbooks_path = ["site-cookbooks"]
+      chef.add_recipe "my-haproxy"
+      chef.json = {
+        "my-haproxy" => {
+          "backend" => [
+            {
+              "name" => "app1",
+              "addr" => "192.168.100.101:80"
+            },
+            {
+              "name" => "app2",
+              "addr" => "192.168.100.102:80"
+            }
+          ]
+        }
+      }
+    end
+  end
+  config.vm.define "jenkins" do |node|
+    node.vm.provider "virtualbox" do |vb|
+      vb.name = "jenkins"
+      vb.memory = "4096"
+      vb.cpus = 2
+    end
+    node.vm.network "private_network", ip: "192.168.100.11"
+    node.vm.provision "chef_zero" do |chef|
+      chef.nodes_path = "nodes"
+      chef.cookbooks_path = ["site-cookbooks"]
+      chef.add_recipe "my-jenkins"
+        chef.json = {
+          "my-jenkins" => {
+            "check_site" => {
+              "addr" => "http://192.168.100.10"
+            }
+          }
+        }
+    end
+  end
+end

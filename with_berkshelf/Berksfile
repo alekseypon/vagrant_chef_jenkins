@@ -1,0 +1,5 @@
+source 'https://supermarket.chef.io'
+
+cookbook 'my-apache', path: './site-cookbooks/my-apache'
+cookbook 'my-haproxy', path: './site-cookbooks/my-haproxy'
+cookbook 'my-jenkins', path: './site-cookbooks/my-jenkins'

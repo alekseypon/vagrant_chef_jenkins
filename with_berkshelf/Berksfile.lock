@@ -1,0 +1,22 @@
+DEPENDENCIES
+  my-apache
+    path: site-cookbooks/my-apache
+  my-haproxy
+    path: site-cookbooks/my-haproxy
+  my-jenkins
+    path: site-cookbooks/my-jenkins
+
+GRAPH
+  dpkg_autostart (0.2.0)
+  jenkins (6.0.0)
+    dpkg_autostart (>= 0.0.0)
+    runit (>= 1.7)
+  my-apache (0.0.1)
+  my-haproxy (0.0.1)
+  my-jenkins (0.0.1)
+    jenkins (>= 0.0.0)
+  packagecloud (1.0.0)
+  runit (4.1.1)
+    packagecloud (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+  yum-epel (3.1.0)
